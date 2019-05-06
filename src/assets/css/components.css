@@ -1,0 +1,20 @@
+
+  .ieditor {
+    background: red;
+  }
+  .ieditor:hover {
+    background: blue;
+  }
+  .ieditor:active {
+    background: green;
+  }
+  
+  .ibutton {
+    background: red;
+  }
+  .ibutton:hover {
+    background: blue;
+  }
+  .ibutton:active {
+    background: green;
+  }
