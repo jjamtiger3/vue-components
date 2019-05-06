@@ -1,6 +1,6 @@
 
 <template lang="html">
-  <input v-bind:type="type" v-bind:class="editorClass" v-bind:value="value" v-on:input="input();" v-bind:maxlength="maxLength">
+  <input v-bind:type="type" v-bind:class="editorClass" v-bind:value="value" v-on:input="input();" v-bind:maxlength="maxLength" v-bind:inputType="inputType">
 </template>
 
 <script>
@@ -11,23 +11,40 @@ export default {
     var editorClass = 'ieditor';
     var realValue = '';
     var maxLength = null;
+    var inputType = 'none';
     return {
-      value, type, editorClass, realValue, maxLength
+      value, type, editorClass, realValue, maxLength, inputType
     }
   },
   created () {
-    var patterns = this.$attrs.pattern.split(',');
+    var $attrs = this.$attrs;
+    var patterns = $attrs.pattern.split(',');
 		patterns[0] = patterns[0].replace(/[\[\]]/g, '').trim(); // 첫번째 패턴에서 배열기호를 제거한 실제 패턴
 		patterns[1] = patterns[1].replace(/[\[\]]/g, '').trim(); // 두번째 패턴에서 배열기호를 제거한 실제 패턴
     this.maxLength = patterns[0].length > patterns[1].length ? patterns[0].length : patterns[1].length;
+    this.inputType = {
+        'A': 'ascii',
+        'Z': 'number'
+    }[patterns[0][0]] || 'none';
   },
   methods: {
     input () {
         var elem = this.$el;
+				var value = elem.value; // input에서 출력되는 실제ㅔ 값
+        var inputType = this.inputType; // input type: number일 경우 숫자만 ascii일 경우 영문 / 숫자만, none일 경우 한 영 숫자
+        switch(inputType) {
+          case 'number':
+            value = value.replace(/[^0-9]/g, '');
+            break;
+          case 'ascii':
+            value = value.replace(/[^a-zA-Z0-9]/g, '');
+            break;
+          default:
+            break;
+        }
 				var splitter = '-'; // 추후 splitter를 설정할 수 있도록 변수처리
-				var value = this.value; // input에서 출력되는 실제ㅔ 값
 				// 출력된 값에서 패턴이 제거된 실제 값을 저장한다.
-				var realValue = elem.value.replace(new RegExp(eval('/' + splitter + '/g')), '');
+				var realValue = value.replace(new RegExp(eval('/' + splitter + '/g')), '');
 				var patterns = this.$attrs.pattern.split(','); // 멀티패턴처리
 				var pattsLen = patterns.length; // 패턴의 개수
 				var firstPatternLen = 0, secondPatternLen = 0; // 추후 3가지이상 패턴이 필요할수도있으니 그때를대비한 명명
@@ -79,6 +96,16 @@ export default {
 							currPattern.push(_pattern[i]);
 							break;
 						case 'A':
+							if(i === 0) { // 첫번째 패턴 영역인 경우 무조건 전체 길이를 받아옴
+								_strReg = '(\\d{' + _pattern[i].length + '})';
+								strExp.push(_strReg);
+								repExp.push('$' + (i + 1));
+							} else { // 그 외엔 앞에 1, 패턴길이로 받아옴
+								_strReg = '(\\d{1,' + _pattern[i].length + '})';
+								strExp.push(_strReg);
+								repExp.push('$' + (i + 1));
+							}
+							currPattern.push(_pattern[i]);
 							break;
 					}
 					// 실제 입력된 값이 현재 길이보다 짧다면 패턴을 만들면 안되므로 break;

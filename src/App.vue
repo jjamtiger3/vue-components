@@ -2,6 +2,7 @@
   <div id="app">
     <ibutton></ibutton>
     <ieditor pattern="ZZZ-ZZ-ZZZZZ, ZZZZZZ-ZZZZZZZ"></ieditor>
+    <ieditor pattern="AAAA-AAAA-AAAA-AAAA, AAA-AAA-AAAAA"></ieditor>
   </div>
 </template>
 
