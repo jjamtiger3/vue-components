@@ -25,7 +25,7 @@ export default {
     input () {
         var elem = this.$el;
 				var splitter = '-'; // 추후 splitter를 설정할 수 있도록 변수처리
-				var value = this.$el.value; // input에서 출력되는 실제ㅔ 값
+				var value = this.value; // input에서 출력되는 실제ㅔ 값
 				// 출력된 값에서 패턴이 제거된 실제 값을 저장한다.
 				var realValue = elem.value.replace(new RegExp(eval('/' + splitter + '/g')), '');
 				// var patterns = elem.pattern.split(','); // 멀티패턴처리
