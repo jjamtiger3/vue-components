@@ -16,7 +16,7 @@ export default {
     }
   },
   created () {
-    var patterns = '[ZZZ-ZZ-ZZZZZZZ, ZZZZZZ-ZZZZZZZ]'.split(',');
+    var patterns = this.$attrs.pattern.split(',');
 		patterns[0] = patterns[0].replace(/[\[\]]/g, '').trim(); // 첫번째 패턴에서 배열기호를 제거한 실제 패턴
 		patterns[1] = patterns[1].replace(/[\[\]]/g, '').trim(); // 두번째 패턴에서 배열기호를 제거한 실제 패턴
     this.maxLength = patterns[0].length > patterns[1].length ? patterns[0].length : patterns[1].length;
@@ -28,8 +28,7 @@ export default {
 				var value = this.value; // input에서 출력되는 실제ㅔ 값
 				// 출력된 값에서 패턴이 제거된 실제 값을 저장한다.
 				var realValue = elem.value.replace(new RegExp(eval('/' + splitter + '/g')), '');
-				// var patterns = elem.pattern.split(','); // 멀티패턴처리
-        var patterns = '[ZZZ-ZZ-ZZZZZZZ, ZZZZZZ-ZZZZZZZ]'.split(',');
+				var patterns = this.$attrs.pattern.split(','); // 멀티패턴처리
 				var pattsLen = patterns.length; // 패턴의 개수
 				var firstPatternLen = 0, secondPatternLen = 0; // 추후 3가지이상 패턴이 필요할수도있으니 그때를대비한 명명
 				var objPattern;

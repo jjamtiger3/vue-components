@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <ibutton></ibutton>
-    <ieditor></ieditor>
+    <ieditor pattern="ZZZ-ZZ-ZZZZZ, ZZZZZZ-ZZZZZZZ"></ieditor>
   </div>
 </template>
 
