@@ -30,21 +30,21 @@ export default {
   methods: {
     input () {
         var elem = this.$el;
-				var value = elem.value; // input에서 출력되는 실제ㅔ 값
+				var value = elem.value; // input에서 출력되는 실제 값
+				// 출력된 값에서 패턴이 제거된 실제 값을 저장한다.
+				var realValue = value.replace(new RegExp(eval('/' + splitter + '/g')), '');
         var inputType = this.inputType; // input type: number일 경우 숫자만 ascii일 경우 영문 / 숫자만, none일 경우 한 영 숫자
         switch(inputType) {
           case 'number':
-            value = value.replace(/[^0-9]/g, '');
+            realValue = realValue.replace(/[^0-9]/g, '');
             break;
           case 'ascii':
-            value = value.replace(/[^a-zA-Z0-9]/g, '');
+            realValue = realValue.replace(/[^-~\w]/g, "");
             break;
           default:
             break;
         }
 				var splitter = '-'; // 추후 splitter를 설정할 수 있도록 변수처리
-				// 출력된 값에서 패턴이 제거된 실제 값을 저장한다.
-				var realValue = value.replace(new RegExp(eval('/' + splitter + '/g')), '');
 				var patterns = this.$attrs.pattern.split(','); // 멀티패턴처리
 				var pattsLen = patterns.length; // 패턴의 개수
 				var firstPatternLen = 0, secondPatternLen = 0; // 추후 3가지이상 패턴이 필요할수도있으니 그때를대비한 명명
