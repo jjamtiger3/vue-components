@@ -1,20 +1,27 @@
 
+  /* 에디터 CSS */
   .ieditor {
-    background: red;
   }
   .ieditor:hover {
-    background: blue;
   }
   .ieditor:active {
-    background: green;
   }
-  
+
+  /* 버튼 CSS */
   .ibutton {
-    background: red;
   }
   .ibutton:hover {
-    background: blue;
   }
   .ibutton:active {
-    background: green;
+  }
+
+  /* 도형 CSS */
+  .ipolygon {
+
+  }
+  .ipolygon:hover {
+
+  }
+  .ipolygon:active {
+
   }
