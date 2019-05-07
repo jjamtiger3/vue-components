@@ -6,6 +6,7 @@
     <ieditor pattern="ZZZ-ZZ-ZZZZZ, ZZZZZZ-ZZZZZZZ"></ieditor>
     <ieditor pattern="AAAA-AAAA-AAAA-AAAA, AAA-AAA-AAAAA"></ieditor>
     <ipolygon></ipolygon>
+    <ipolygon polygonType="diamond"></ipolygon>
   </div>
 </template>
 
