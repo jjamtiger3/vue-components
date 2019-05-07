@@ -31,15 +31,16 @@ export default {
     input () {
         var elem = this.$el;
 				var value = elem.value; // input에서 출력되는 실제 값
+        var splitter = '-'; // 추후 변수로 처리할 수 있도록 수정해야함. 일단 패턴은 - 로 온다고 가정. 추후 / 도 처리할수있도록 할 예정
 				// 출력된 값에서 패턴이 제거된 실제 값을 저장한다.
 				var realValue = value.replace(new RegExp(eval('/' + splitter + '/g')), '');
         var inputType = this.inputType; // input type: number일 경우 숫자만 ascii일 경우 영문 / 숫자만, none일 경우 한 영 숫자
         switch(inputType) {
           case 'number':
-            realValue = realValue.replace(/[^0-9]/g, '');
+            this.realValue = realValue.replace(/[^0-9]/g, '');
             break;
           case 'ascii':
-            realValue = realValue.replace(/[^-~\w]/g, "");
+            this.realValue = realValue.replace(/[^-~\w]/g, "");
             break;
           default:
             break;
@@ -50,10 +51,17 @@ export default {
 				var firstPatternLen = 0, secondPatternLen = 0; // 추후 3가지이상 패턴이 필요할수도있으니 그때를대비한 명명
 				var objPattern;
 
+        if(pattsLen > 1) {
+  				if(patterns[0].replace(/(\W)/g, '').length > patterns[1].replace(/(\W)/g, '').length) {
+  					var tmp = patterns[0];
+  					patterns[0] = patterns[1];
+  					patterns[1] = tmp;
+  				}
+  			}
+
 				patterns[0] = patterns[0].replace(/[\[\]]/g, '').trim(); // 첫번째 패턴에서 배열기호를 제거한 실제 패턴
 				firstPatternLen = patterns[0].replace(/(\W)/g, '').trim().length; // 첫번째 패턴에서 특수기호를 제거한 실제 패턴의 길이
 				objPattern = this.getExpFromPattern(patterns[0], splitter); // 첫번째 패턴을 토대로 정규식과 변환식을 리턴받음
-        this.realValue = realValue;
 
 				if(patterns.length > 1) {
 					// 일단 패턴이 최대 두개라는 가정하에. 추후3개이상인 경우 반복문 처리해야 할듯
@@ -81,7 +89,7 @@ export default {
 				var currPattern = [];
 
 				for(var i = 0; i < _pattLen; i++) {
-					var charPatt = 'Z'; // 영문인경우 A 숫자인경우 Z. 일단 Z로 하드코딩 해둠. 추후 변수처리
+          var charPatt = _pattern[0][0]; // 영문인경우 A 숫자인경우 Z. 추후 복합패턴에 관해 고려해야할 상황이 오면 이 코드를 수정
 					switch(charPatt) {
 						case 'Z':
 							if(i === 0) { // 첫번째 패턴 영역인 경우 무조건 전체 길이를 받아옴
@@ -97,11 +105,11 @@ export default {
 							break;
 						case 'A':
 							if(i === 0) { // 첫번째 패턴 영역인 경우 무조건 전체 길이를 받아옴
-								_strReg = '(\\d{' + _pattern[i].length + '})';
+								_strReg = '(\\w{' + _pattern[i].length + '})';
 								strExp.push(_strReg);
 								repExp.push('$' + (i + 1));
 							} else { // 그 외엔 앞에 1, 패턴길이로 받아옴
-								_strReg = '(\\d{1,' + _pattern[i].length + '})';
+								_strReg = '(\\w{1,' + _pattern[i].length + '})';
 								strExp.push(_strReg);
 								repExp.push('$' + (i + 1));
 							}
