@@ -7,6 +7,10 @@
     <ieditor pattern="AAAA-AAAA-AAAA-AAAA, AAA-AAA-AAAAA"></ieditor>
     <ipolygon></ipolygon>
     <ipolygon polygonType="diamond"></ipolygon>
+    <div>
+      <ipolygon style="width: 100px; height: 100px" polygonColor="blue"></ipolygon>
+      <ipolygon style="width: 100px; height: 150px" polygonType="diamond" polygonColor="#ff0000"></ipolygon>
+    </div>
   </div>
 </template>
 
