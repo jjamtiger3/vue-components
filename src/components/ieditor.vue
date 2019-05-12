@@ -84,6 +84,7 @@ export default {
 				var strExp = [];
 				var repExp = [];
         var _strReg;
+        var _strPrefix;
 
 				var len = this.realValue.length;
 				var currPattern = [];
@@ -92,30 +93,24 @@ export default {
           var charPatt = _pattern[0][0]; // 영문인경우 A 숫자인경우 Z. 추후 복합패턴에 관해 고려해야할 상황이 오면 이 코드를 수정
 					switch(charPatt) {
 						case 'Z':
-							if(i === 0) { // 첫번째 패턴 영역인 경우 무조건 전체 길이를 받아옴
-								_strReg = '(\\d{' + _pattern[i].length + '})';
-								strExp.push(_strReg);
-								repExp.push('$' + (i + 1));
-							} else { // 그 외엔 앞에 1, 패턴길이로 받아옴
-								_strReg = '(\\d{1,' + _pattern[i].length + '})';
-								strExp.push(_strReg);
-								repExp.push('$' + (i + 1));
-							}
-							currPattern.push(_pattern[i]);
+              _strPrefix = '(\\d{';
 							break;
 						case 'A':
-							if(i === 0) { // 첫번째 패턴 영역인 경우 무조건 전체 길이를 받아옴
-								_strReg = '(\\w{' + _pattern[i].length + '})';
-								strExp.push(_strReg);
-								repExp.push('$' + (i + 1));
-							} else { // 그 외엔 앞에 1, 패턴길이로 받아옴
-								_strReg = '(\\w{1,' + _pattern[i].length + '})';
-								strExp.push(_strReg);
-								repExp.push('$' + (i + 1));
-							}
-							currPattern.push(_pattern[i]);
+              _strPrefix = '(\\w{';
 							break;
 					}
+
+					if(i === 0) { // 첫번째 패턴 영역인 경우 무조건 전체 길이를 받아옴
+            _strReg = _strPrefix + _pattern[i].length + '})';
+						strExp.push(_strReg);
+						repExp.push('$' + (i + 1));
+					} else { // 그 외엔 앞에 1, 패턴길이로 받아옴
+            _strReg = _strPrefix + '1,' + _pattern[i].length + '})';
+						strExp.push(_strReg);
+						repExp.push('$' + (i + 1));
+					}
+					currPattern.push(_pattern[i]);
+
 					// 실제 입력된 값이 현재 길이보다 짧다면 패턴을 만들면 안되므로 break;
 					if(len <= currPattern.join('').length) {
 						break;
